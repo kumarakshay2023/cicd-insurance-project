@@ -1,0 +1,18 @@
+node {
+    def MAVEN = "mvn" 
+    def DOCKER = "docker"  
+    def appname = "pavan-image123"
+
+    stage('Clone Repository') {
+        git credentialsId: 'git-credentials', url: 'https://github.com/babupavan/star-agile-insurance-project.git'
+    }
+    stage('Build') {
+      sh "${MAVEN} package"
+      }
+    stage('Docker Build') {
+        sh "docker build -t pavan ."
+    }
+    stage('Docker Run') {
+        sh "${DOCKER} run -d -p 8081:8081 --name ${appname} pavan:latest"
+    }
+}
